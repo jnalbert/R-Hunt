@@ -25,6 +25,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="creategame"
         options={{
+          headerShown: false,
           title: 'Create Game',
         }}
       />

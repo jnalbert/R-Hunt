@@ -6,8 +6,15 @@ export default function Layout() {
       <Stack.Screen
         name="create"
         options={{
-          headerShown: false,
+          headerShown: true,
           title: "Create Game",
+        }}
+      />
+      <Stack.Screen
+        name="lobby"
+        options={{
+          headerShown: false,
+          title: "Lobby",
         }}
       />
     </Stack>
