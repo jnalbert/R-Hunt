@@ -25,7 +25,7 @@ function Index() {
       router.replace("/login");
     } else if (isLoggedIn) {
       // go to tabs root.
-      router.replace("/first");
+      router.replace("/two");
     }
   }, [segments, navigationState?.key, initialized]);
 
