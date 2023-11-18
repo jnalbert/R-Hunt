@@ -25,7 +25,7 @@ function Index() {
       router.replace("/login");
     } else if (isLoggedIn) {
       // go to tabs root.
-      router.replace("/two");
+      router.replace("/creategame");
     }
   }, [segments, navigationState?.key, initialized]);
 
