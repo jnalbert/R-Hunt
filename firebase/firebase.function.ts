@@ -66,6 +66,9 @@ export const addPastGameToUserDoc = async (id: string, gameID: string, place: st
 // } 
 
 export const createGameDoc = async(game : GameInfo) => {
+
+  try {
+
     const newGameRef = doc(collection(db, "games"));
 
     const dataToAdd = {
@@ -83,15 +86,23 @@ export const createGameDoc = async(game : GameInfo) => {
     await setDoc(newGameRef, dataToAdd);
 
 
-    for (let i=0; i < game.objectives.length; i++) {
+    for (let i = 0; i < game.objectives.length; i++) {
         const obj : ObjectiveType = game.objectives[i];
+        console.log("Here")
         const imageUrl = await uploadImageToStorageBucket(`games/${newGameRef.id}/${i}`, obj.photoUrl)
-        await setDoc(doc(db, `games/${newGameRef.id}/objectives`), {
+        console.log("Here1")
+        const newObjectiveRef = doc(collection(db, `games/${newGameRef.id}/objectives`));
+        console.log("Here2")
+        await setDoc(newObjectiveRef, {
             image: imageUrl,
             latitude: obj.latitude,
             longitude: obj.longitude
         })
+        console.log("Here3")
     }
+  } catch (error) {
+    console.log(error);
+  }
 
     
 }
