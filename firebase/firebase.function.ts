@@ -92,8 +92,6 @@ export const createGameDoc = async(game : GameInfo) => {
             longitude: obj.longitude
         })
     }
-
-    
 }
 
 /*
