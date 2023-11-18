@@ -24,11 +24,16 @@ const Glasgow = {
 
 }
 
+const DundeeA = {
+    latitude: 33.978505,
+    longitude: -117.32461,
+}
+
 
 
 export default function Game() {
     const [fabColor, setFabColor] = useState("");
-    const [distance, setDistance] = useState(100);
+    let [distance, setDistance] = useState(100);
 
     let [currentLocation, setCurrentLocation] = useState(null);
 
@@ -74,8 +79,9 @@ export default function Game() {
             }
             currentLocation = await Location.watchPositionAsync({ accuracy: Location.Accuracy.Highest, timeInterval: 1000, distanceInterval: 0 }, (loc) => {
                 setCurrentLocation(loc.coords)
-                setDistance(calculateDistance(loc.coords, SOMRB))
-                getDistance()
+                const distance = calculateDistance(loc.coords, BellTower)
+                setDistance(distance)
+                getDistance(distance)
                 });
             console.log(currentLocation)
            
@@ -83,7 +89,7 @@ export default function Game() {
         _getLocationAsync()
     }, [])
 
-    const getDistance = () => {
+    const getDistance = (distance: number) => {
         if(distance <= 50) {
             setFabColor("green")
         }
@@ -95,36 +101,6 @@ export default function Game() {
         }
     }
     
-    // useEffect(() => {
-    //     const userLocation =async () => {
-    //     let {status} = await Location.requestForegroundPermissionsAsync();
-    //     if(status !== 'granted') {
-    //         setErrorMsg("Permission to access location is denied");
-    //     }
-        
-    //     Location.watchPositionAsync({accuracy: 6, timeInterval: 200, distanceInterval: 0}, (position) => {
-    //         console.log(position)
-    //     })
-    //     let location = await Location.getCurrentPositionAsync({});
-        
-    //     //console.log(location.coords.latitude,location.coords.longitude);
-    //     setCurrentLocation({
-    //         latitude: location.coords.latitude,
-    //         longitude: location.coords.longitude,
-    //         latitudeDelta: 0.005,
-    //         longitudeDelta: 0.005
-    //     });
-
-    //     setMapRegion({
-    //         latitude: location.coords.latitude,
-    //         longitude: location.coords.longitude,
-    //         latitudeDelta: 0.005,
-    //         longitudeDelta: 0.005
-    //     });
-    // }
-
-    //     userLocation();
-    // }, []);
     
 
 
@@ -137,7 +113,6 @@ export default function Game() {
                 >
                     <Marker 
                         coordinate={{
-                            
                             latitude: currentLocation ? currentLocation.latitude : undefined,
                             longitude: currentLocation ? currentLocation.longitude : undefined,
                         } }
@@ -166,8 +141,8 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     margin: 16,
-    right: 0,
-    bottom: 0,
+    right: 140,
+    bottom: -20,
     borderRadius: 50,
   },
 });
