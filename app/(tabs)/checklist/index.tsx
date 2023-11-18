@@ -4,8 +4,11 @@ import { Checkbox, Card, Title, Paragraph } from 'react-native-paper';
 
 const ObjectivesList = () => {
   const [objectives, setObjectives] = useState([
-    { id: '1', isChecked: false, number: 'Objective 1', image: null },
-    { id: '2', isChecked: false, number: 'Objective 2', image: null },
+    { id: '1', isChecked: false, number: 'Objective 1', image: "./assets/images/chickenimage.png" },
+    { id: '2', isChecked: false, number: 'Objective 2', image: "https://unsplash.com/images/animals/chicken" },
+    { id: '3', isChecked: false, number: 'Objective 1', image: "https://unsplash.com/images/animals/chicken" },
+    { id: '4', isChecked: false, number: 'Objective 2', image: "https://unsplash.com/images/animals/chicken" },
+    { id: '5', isChecked: false, number: 'Objective 1', image: "https://unsplash.com/images/animals/chicken" },
     // Add more objectives as needed
   ]);
 
