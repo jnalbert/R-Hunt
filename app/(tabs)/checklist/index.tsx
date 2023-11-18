@@ -1,70 +1,62 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  FlatList,
-} from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
+import { Checkbox, Card, Title, Paragraph } from 'react-native-paper';
 
-interface Objective {
-    isfound: boolean;
-    number: number;
-    imageurl: string;
-}
+const ObjectivesList = () => {
+  const [objectives, setObjectives] = useState([
+    { id: '1', isChecked: false, number: 'Objective 1', image: null },
+    { id: '2', isChecked: false, number: 'Objective 2', image: null },
+    // Add more objectives as needed
+  ]);
 
-function ObjectiveComp(objective: Objective) {
-}
-
-export default function TodoListScreen() {
-    const [todo, setTodo] = useState('');
-    const [todos, setTodos] = useState([]);
-    const [objs, setObjs] = useState<Objective[]>([]);
-
-    // populate from db in useEffect
-
-    return (
-      <View style={styles.container}>
-        <FlatList
-          style={styles.list}
-          data={todos}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.todo}>
-              <Text style={styles.todoText}>{item.todo}</Text>
-            </View>
-          )}
-        />
-      </View>
+  const handleCheck = (id) => {
+    setObjectives((prevObjectives) =>
+      prevObjectives.map((objective) =>
+        objective.id === id ? { ...objective, isChecked: !objective.isChecked } : objective
+      )
     );
-  }
+  };
 
+  const renderItem = ({ item }) => (
+    <Card style={styles.card}>
+      <Card.Content>
+        <View style={styles.row}>
+          <Checkbox
+            status={item.isChecked ? 'checked' : 'unchecked'}
+            onPress={() => handleCheck(item.id)}
+          />
+          <Title>{item.number}</Title>
+        </View>
+        {/* Display your image here */}
+        {/* <Image source={{ uri: item.image }} style={styles.image} /> */}
+        <Paragraph>Image: {item.image}</Paragraph>
+      </Card.Content>
+    </Card>
+  );
+
+  return (
+    <FlatList
+      data={objectives}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id}
+    />
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 30,
+  card: {
+    margin: 10,
   },
-
-  list: {
-    width: '100%',
-  },
-  todo: {
+  row: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
   },
-  todoText: {
-    flex: 1,
-    marginRight: 10,
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginVertical: 10,
   },
 });
+
+export default ObjectivesList;
