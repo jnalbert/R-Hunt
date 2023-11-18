@@ -15,7 +15,6 @@ interface Objective {
 }
 
 function ObjectiveComp(objective: Objective) {
-    return <Text>hi</Text>
 }
 
 export default function TodoListScreen() {
