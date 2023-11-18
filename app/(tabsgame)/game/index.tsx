@@ -79,7 +79,7 @@ export default function Game() {
             }
             currentLocation = await Location.watchPositionAsync({ accuracy: Location.Accuracy.Highest, timeInterval: 1000, distanceInterval: 0 }, (loc) => {
                 setCurrentLocation(loc.coords)
-                const distance = calculateDistance(loc.coords, BellTower)
+                const distance = calculateDistance(loc.coords, Glasgow)
                 setDistance(distance)
                 getDistance(distance)
                 });
@@ -101,8 +101,6 @@ export default function Game() {
         }
     }
     
-    
-
 
   return (
     <ScreenWrapperComp>
@@ -133,6 +131,7 @@ export default function Game() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
   },
   map: {
     width: Dimensions.get('window').width,

@@ -10,6 +10,14 @@ export default function Layout() {
           title: "Create Game",
         }}
       />
+      <Stack.Screen 
+        name="lobby"
+        options={{
+          headerShown: false,
+          title: "Join Game",
+        }}
+
+      />
     </Stack>
 
   );
