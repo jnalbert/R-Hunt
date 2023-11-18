@@ -6,6 +6,8 @@ import { Alert, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { MediaTypeOptions, getCameraPermissionsAsync, launchCameraAsync, requestCameraPermissionsAsync } from "expo-image-picker";
 import Objective from "../../../components/createGame/objective";
+import { authSignOut } from "../../context/auth.store";
+import { router } from "expo-router";
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -129,6 +131,14 @@ export default function CreateScreen() {
           Add Objective
         </Button>
       </View>
+        
+      <Button onPress={async () => {
+        await authSignOut()
+        router.push('/');
+      }}>
+          Go to Login page
+      </Button>
+
       <Button
         icon="camera"
         mode="contained"

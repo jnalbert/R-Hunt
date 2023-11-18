@@ -18,8 +18,8 @@ const unsub = onAuthStateChanged(auth, (user) => {
 
 
     // IF DEV MODE
-  const uid = "dev";
-  // const uid = user ? user.uid : null;
+  // const uid = "dev";
+  const uid = user ? user.uid : null;
 
   AuthStore.update((store) => {
     store.userId = uid;
