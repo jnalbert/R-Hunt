@@ -14,8 +14,8 @@ export default function Layout() {
       <Stack.Screen
         name="signup"
         options={{
-          headerShown: false,
-          title: "sign up",
+          headerShown: true,
+          title: "Sign Up",
         }}
       />
     </Stack>

@@ -1,4 +1,5 @@
-import { db } from "./Firebase.Config";
+import { Platform } from "react-native";
+import { db, storage } from "./Firebase.Config";
 import {
     addDoc,
     collection,
@@ -14,36 +15,23 @@ import {
     where,
     writeBatch,
   } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-
-
-export const addNewUserToDB = async (id: string, fullname: string, username: string, profilephoto: string) => {
-    // try {
-      await setDoc(doc(db, 'users', id), {
-        id: id,
-        fullname: fullname,
-        username: username,
-        profilephoto: profilephoto,
-      });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-};
-
-
-export const addPastGameToUserDoc = async (id: string, gameID: string, place: string, objective_completed: string) => {
-    // try {
-      await setDoc(doc(db, `users/${id}`, gameID), {
-        gameID: gameID,
-        place: place,
-        objective_completed:objective_completed,
-      });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-};
-
-// export const uploadImageToStorageBucket = async 
+export const uploadImageToStorageBucket = async (path: string, url: string): Promise<string> => {
+  // add image to storage bucket and return the download URl
+  try {
+    url = Platform.OS === 'ios' ? url.replace('file://', '') : url;
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const storageRef = ref(storage, path);
+    const snapshot = await uploadBytes(storageRef, blob);
+    const downloadUrl = await getDownloadURL(snapshot.ref);
+    return downloadUrl
+  } catch (error) {
+    console.log(error)
+    return error;
+  }
+}
 
 
 /*
