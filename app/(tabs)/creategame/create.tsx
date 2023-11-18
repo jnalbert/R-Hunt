@@ -8,6 +8,7 @@ import { MediaTypeOptions, getCameraPermissionsAsync, launchCameraAsync, request
 import Objective from "../../../components/createGame/objective";
 import { authSignOut } from "../../context/auth.store";
 import { router } from "expo-router";
+import { getCurrentPositionAsync, requestForegroundPermissionsAsync } from "expo-location";
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -61,6 +62,13 @@ export default function CreateScreen() {
       return
     }
 
+    // get location persmissions
+    let locationStats = await requestForegroundPermissionsAsync();
+      if (locationStats.status !== 'granted') {
+        Alert.alert('Permission to access location was denied');
+        return;
+      }
+
     // open the camera
     const imageUrl = await launchCameraAsync({
       mediaTypes: MediaTypeOptions.Images,
@@ -71,6 +79,10 @@ export default function CreateScreen() {
     })
     if (imageUrl.canceled) return;
     // add a new objective to the objectives array
+    const location = await getCurrentPositionAsync({timeInterval: 300});
+
+
+    console.log(location)
     setGameInfo({
       ...gameInfo,
       objectives: [
@@ -78,13 +90,21 @@ export default function CreateScreen() {
         {
           photoUrl: imageUrl.assets[0].uri,
           number: gameInfo.objectives.length + 1,
-          longitude: 0,
-          latitude: 0,
+          longitude: location.coords.longitude,
+          latitude: location.coords.latitude,
         },
       ],
     });
-    // when they take a picture
-    // get that url and add it to the objectives array with the number
+  }
+
+  const createGamePress = () => {
+    if (gameInfo.name === "") return Alert.alert("Please enter a game name");
+    if (gameInfo.playerCount === 0)
+      return Alert.alert("Please enter a player count");
+    if (gameInfo.objectives.length === 0)
+      return Alert.alert("Please add at least one objective");
+
+    console.log(gameInfo);
   }
 
   return (
@@ -149,7 +169,7 @@ export default function CreateScreen() {
           position: "absolute",
           bottom: 0,
         }}
-        onPress={() => console.log("Pressed")}
+        onPress={createGamePress}
       >
         Create Game
       </Button>

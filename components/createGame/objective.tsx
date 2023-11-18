@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
 });
 
 const Objective: FC<ObjectiveType> = ({number, photoUrl}) => {
-  console.log("Objective", photoUrl)
   return (
     <View style={styles.wrapper} >
       <Text variant='titleLarge'># {number}</Text>
