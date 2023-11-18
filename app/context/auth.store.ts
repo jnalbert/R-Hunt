@@ -5,7 +5,10 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { auth } from "../../firebase/Firebase.Config";
+import { auth, db } from '../../firebase/Firebase.Config';
+import { SignUpFormState } from "../(auth)/signup";
+import { doc, setDoc } from "firebase/firestore";
+import { uploadImageToStorageBucket } from "../../firebase/firebase.function";
 
 export const AuthStore = new Store({
   isLoggedIn: false,
@@ -20,6 +23,7 @@ const unsub = onAuthStateChanged(auth, (user) => {
     // IF DEV MODE
   // const uid = "dev";
   const uid = user ? user.uid : null;
+  // console.log("userId", uid)
 
   AuthStore.update((store) => {
     store.userId = uid;
@@ -56,9 +60,20 @@ export const authSignOut = async () => {
 };
 
 // ADD ACTUAL TYPES TO THESE
-export const authSignUp = async (email, password, displayName) => {
+export const authSignUp = async (data: SignUpFormState) => {
   try {
-    const resp = await createUserWithEmailAndPassword(auth, email, password);
+    const resp = await createUserWithEmailAndPassword(auth, data.username + "@gmail.com", data.password);
+
+    const path = `users/${resp.user.uid}/profilePhoto`;
+    const getProfileUrl = await uploadImageToStorageBucket(path, data.photoUrl);
+    
+    const userDocRef = doc(db, 'users', resp.user.uid);
+    await setDoc(userDocRef, {
+      id: resp.user.uid,
+      fullName: data.name,
+      username: data.username,
+      profileUrl: getProfileUrl,
+    });
 
     AuthStore.update((store) => {
       store.userId = resp.user.uid;

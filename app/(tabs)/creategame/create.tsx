@@ -48,11 +48,6 @@ export default function CreateScreen() {
     objectives: [],
   });
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await requestCameraPermissionsAsync();
-    })();
-  }, []);
 
   const onAddObjective = async () => {
 

@@ -1,11 +1,10 @@
 import { View, Text, Pressable, TouchableHighlight, Alert } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
-import { authSignIn, authSignUp } from '../context/auth.store';
+import { authSignIn, authSignOut, authSignUp } from '../context/auth.store';
 import ScreenWrapperComp from '../../components/shared/ScreenWrapperComp';
 
 import { Button } from 'react-native-paper';
-import { addNewUserToDB } from '../../firebase/firebase.function';
 import { TextInput } from 'react-native-paper';
 import {StyleSheet } from 'react-native';
 
@@ -13,35 +12,48 @@ import {StyleSheet } from 'react-native';
 export default function login() {
   const router = useRouter();
 
-  const [text, setText] = React.useState("");
-  const [text1, setText1] = React.useState("");
+  const [formState, setFormState] = React.useState({username: '', password: ''});
+
+  const singIntClick = async () => {
+    if (!formState.username) {
+      Alert.alert('Please enter a username');
+      return
+    }
+    if (!formState.password) {
+      Alert.alert('Please enter a password');
+      return;
+    }
+    formState.username = formState.username + '@gmail.com';
+    // await authSignOut();
+    const res = await authSignIn(formState.username, formState.password)
+    if (res.error) {
+      Alert.alert(res.error);
+      return;
+    } 
+    router.push('/');
+  }
 
 
   return (
     <ScreenWrapperComp>
-      <Button icon="camera" mode="contained" onPress={() => addNewUserToDB("John1 ", "John Zhou", "JohnZ9865", "noprofilephoto")}>
-            HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-      </Button>
-
-      <Button onPress={async () => {
-        router.push('/(tabs)/creategame/create');
-      }}>
-          Go to create
-      </Button>
       
       <View style={styles.wrapper}>
         <TextInput
           label="Username"
-          value={text}
-          onChangeText={text => setText(text)}
+          value={formState.username}
+          onChangeText={text => setFormState(
+            {...formState, username: text}
+          )}
           style={styles.textbox}
           mode="outlined"
         />
 
         <TextInput
           label="Password"
-          value={text1}
-          onChangeText={text1 => setText1(text1)}
+          value={formState.password}
+          onChangeText={text1 => setFormState(
+            {...formState, password: text1}
+          )}
           style={{marginTop:15}}
           mode="outlined"
         />
@@ -49,7 +61,6 @@ export default function login() {
       
 
       <Button
-        icon="camera"
         mode="contained"
         style={{
           marginTop: 20,
@@ -58,9 +69,15 @@ export default function login() {
           position: "absolute",
           bottom: 0,
         }}
-        onPress={() => authSignIn(text, text1)}
+        onPress={singIntClick}
       >
         Sign in
+      </Button>
+
+      <Button style={{marginTop: 10}} onPress={async () => {
+        router.push('/signup');
+      }}>
+          Sign up
       </Button>
       
     </ScreenWrapperComp>
