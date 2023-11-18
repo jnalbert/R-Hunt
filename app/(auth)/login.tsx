@@ -2,11 +2,12 @@ import { View, Text, Pressable, TouchableHighlight, Alert } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router';
 import { authSignIn, authSignUp } from '../context/auth.store';
+import ScreenWrapperComp from '../../components/shared/ScreenWrapperComp';
 
 export default function login() {
   const router = useRouter();
   return (
-    <View>
+    <ScreenWrapperComp>
       <TouchableHighlight onPress={async () => {
         console.log("here")
           const resp = await authSignIn("jnalbert879@gmail.com", "Louis16");
@@ -17,8 +18,8 @@ export default function login() {
             Alert.alert("Login Error", resp.error?.message)
           }
         }}>
-        <Text style={{fontSize: 50, color: "red", alignSelf: 'center', marginTop: 150}}>login</Text>
+        <Text style={{fontSize: 50, color: "red"}}>login</Text>
       </TouchableHighlight>
-    </View>
+    </ScreenWrapperComp>
   )
 }

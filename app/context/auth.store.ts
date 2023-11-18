@@ -23,7 +23,7 @@ const unsub = onAuthStateChanged(auth, (user) => {
 
   AuthStore.update((store) => {
     store.userId = uid;
-    store.isLoggedIn = user ? true : false;
+    store.isLoggedIn = uid ? true : false;
     store.initialized = true;
   });
 });
