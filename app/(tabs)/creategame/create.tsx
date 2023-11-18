@@ -100,6 +100,7 @@ export default function CreateScreen() {
       return Alert.alert("Please add at least one objective");
 
     console.log(gameInfo);
+    //
   }
 
   return (

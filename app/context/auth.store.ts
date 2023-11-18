@@ -86,4 +86,6 @@ export const authSignUp = async (data: SignUpFormState) => {
   }
 };
 
+// const _getUserUid //create this function
+
 registerInDevtools({ AuthStore });
