@@ -249,7 +249,7 @@ const CameraPreview = ({photo, retakePicture, savePhoto}: any) => {
                   fontSize: 20
                 }}
               >
-                Re-take
+                Re-take Photo
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -268,7 +268,7 @@ const CameraPreview = ({photo, retakePicture, savePhoto}: any) => {
                   fontSize: 20
                 }}
               >
-                save photo
+                Save Photo
               </Text>
             </TouchableOpacity>
           </View>
