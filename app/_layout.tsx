@@ -3,6 +3,7 @@ import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack} from 'expo-router';
 import { useEffect } from 'react';
+import { PaperProvider } from 'react-native-paper'
 
 export {
   ErrorBoundary,
@@ -41,8 +42,10 @@ export default function RootLayout() {
 function RootLayoutNav() {
 
   return (
-    <ThemeProvider value={DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}  />
-    </ThemeProvider>
+    <PaperProvider>
+      <ThemeProvider value={DefaultTheme}>
+        <Stack screenOptions={{ headerShown: false }}  />
+      </ThemeProvider>
+    </PaperProvider>
   );
 }
