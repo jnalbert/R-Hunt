@@ -41,7 +41,7 @@ export default function App() {
       setFlashMode('auto')
     }
   }
-
+  
   return (
     <View style={styles.container}>
       {startCamera ? (
