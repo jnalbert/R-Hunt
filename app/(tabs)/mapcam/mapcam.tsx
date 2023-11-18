@@ -7,7 +7,7 @@ export default function App() {
   const [startCamera, setStartCamera] = React.useState(false)
   const [previewVisible, setPreviewVisible] = React.useState(false)
   const [capturedImage, setCapturedImage] = React.useState<any>(null)
-  const [cameraType, setCameraType] = React.useState(Camera.Constants.Type)
+  const [cameraType, setCameraType] = React.useState(Camera.Constants.Type.back)
   const [flashMode, setFlashMode] = React.useState('off')
 
   const __startCamera = async () => {
@@ -41,7 +41,13 @@ export default function App() {
       setFlashMode('auto')
     }
   }
-  
+  const __switchCamera = () => {
+    if (cameraType === 'back') {
+      setCameraType('front')
+    } else {
+      setCameraType('back')
+    }
+  }
   return (
     <View style={styles.container}>
       {startCamera ? (
@@ -56,6 +62,7 @@ export default function App() {
           ) : (
             <Camera
               type={cameraType}
+              flashMode={flashMode}
               style={{flex: 1}}
               ref={(r) => {
                 camera = r
@@ -80,6 +87,12 @@ export default function App() {
                 >
                   <TouchableOpacity
                     onPress={__handleFlashMode}
+                    style={{
+                      backgroundColor: flashMode === 'off' ? '#000' : '#fff',
+                      borderRadius: '50%',
+                      height: 25,
+                      width: 25
+                    }}
                   >
                     <Text
                       style={{
@@ -87,6 +100,23 @@ export default function App() {
                       }}
                     >
                       ⚡️
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={__switchCamera}
+                    style={{
+                      marginTop: 20,
+                      borderRadius: '50%',
+                      height: 25,
+                      width: 25
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 20
+                      }}
+                    >
+                      {cameraType === 'front' ? '🤳' : '📷'}
                     </Text>
                   </TouchableOpacity>
                 </View>
