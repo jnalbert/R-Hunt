@@ -97,8 +97,6 @@ export const createGameDoc = async(game : GameInfo) => {
   } catch (error) {
     console.log(error);
   }
-
-    
 }
 
 /*
