@@ -30,7 +30,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="game"
+        name="joingame"
         options={{
           title: 'Join Game',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
