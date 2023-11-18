@@ -43,6 +43,8 @@ export const addPastGameToUserDoc = async (id: string, gameID: string, place: st
     // }
 };
 
+// export const uploadImageToStorageBucket = async 
+
 
 /*
 export const addGameDoc = async(id: string, gameID: string, place: string, objective_completed: string, ) => {

@@ -19,11 +19,6 @@ export default function login() {
 
   return (
     <ScreenWrapperComp>
-
-      
-      
-
-      
       <Button icon="camera" mode="contained" onPress={() => addNewUserToDB("John1 ", "John Zhou", "JohnZ9865", "noprofilephoto")}>
             HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
       </Button>
