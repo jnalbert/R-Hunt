@@ -11,7 +11,7 @@ export default function App() {
   const [flashMode, setFlashMode] = React.useState('off')
 
   const __startCamera = async () => {
-    const {status} = await Camera.requestCameraPermissionsAsync()
+    const {status} = await Camera.requestPermissionsAsync()
     console.log(status)
     if (status === 'granted') {
       setStartCamera(true)
@@ -249,7 +249,7 @@ const CameraPreview = ({photo, retakePicture, savePhoto}: any) => {
                   fontSize: 20
                 }}
               >
-                Re-take Photo
+                Re-take 
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -268,7 +268,7 @@ const CameraPreview = ({photo, retakePicture, savePhoto}: any) => {
                   fontSize: 20
                 }}
               >
-                Save Photo
+                Save
               </Text>
             </TouchableOpacity>
           </View>
