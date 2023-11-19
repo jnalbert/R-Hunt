@@ -28,6 +28,7 @@ export default function TabLayout() {
         name="camera"
         options={{
           title: 'Camera',
+          headerShown: false,
           tabBarIcon: ({color}) => <TabBarIcon name="camera" color={color} />
         }}
       />
@@ -35,6 +36,7 @@ export default function TabLayout() {
         name="game"
         options={{
           title: 'Map',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
         }}
       />
@@ -42,6 +44,7 @@ export default function TabLayout() {
         name="objectivechecklist"
         options={{
           title: 'CheckList',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
       />
