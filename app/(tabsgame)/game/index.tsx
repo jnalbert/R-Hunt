@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import ScreenWrapperComp from '../../../components/shared/ScreenWrapperComp';
 import * as Location from 'expo-location'
 import {FAB} from 'react-native-paper'
-import Objective from '../../../firebase/Types/DBTypes';
+import {ObjectiveDBType} from '../../../firebase/types/DBTypes';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 
@@ -71,7 +71,6 @@ export default function Game() {
     //   };
 
     useEffect(() => {
-        console.log('hi')
         let _getLocationAsync = async () => {
             let { status } = await Location.getForegroundPermissionsAsync();
             if (status !== 'granted') {
@@ -103,7 +102,6 @@ export default function Game() {
     
 
   return (
-    <ScreenWrapperComp>
         <View style={styles.container}>
             <MapView 
                 style={styles.map} 
@@ -123,7 +121,6 @@ export default function Game() {
                 onPress={() => {console.log("Pressed")}}
             />
         </View>
-    </ScreenWrapperComp>
   );
 } 
 
@@ -131,7 +128,7 @@ export default function Game() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+    height: "90%",
   },
   map: {
     width: Dimensions.get('window').width,
@@ -139,9 +136,12 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    margin: 16,
-    right: 140,
-    bottom: -20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 70,
+    width: 70,
+    alignSelf: 'center',
+    bottom: 15,
     borderRadius: 50,
   },
 });

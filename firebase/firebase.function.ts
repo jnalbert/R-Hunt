@@ -17,16 +17,27 @@ import {
   } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { GameInfo, ObjectiveType } from "../app/(tabs)/creategame/create";
+import { GameDBType } from "./types/DBTypes";
+
 
 export const uploadImageToStorageBucket = async (path: string, url: string): Promise<string> => {
   // add image to storage bucket and return the download URl
   try {
     url = Platform.OS === 'ios' ? url.replace('file://', '') : url;
+    console.log("2 Here1")
     const response = await fetch(url);
+    console.log("2 Here2")
     const blob = await response.blob();
+    console.log("2 Here3")
     const storageRef = ref(storage, path);
+    console.log("2 Here4")
+    
     const snapshot = await uploadBytes(storageRef, blob);
+    console.log("2 Here5")
+
     const downloadUrl = await getDownloadURL(snapshot.ref);
+    console.log("2 Here6")
+
     return downloadUrl
   } catch (error) {
     console.log(error)
@@ -61,15 +72,34 @@ export const addPastGameToUserDoc = async (id: string, gameID: string, place: st
     // }
 };
 
-// export const uploadImageToStorageBucket = async() => {
-    
-// } 
 
-export const createGameDoc = async(game : GameInfo) => {
+//search through fireBase game collection.
+export const searchThroughDocs = async(gamecode : string): Promise<string>=> {
+  const citiesRef = collection(db, "games");
+  const q = query(citiesRef, where("gameCode", "==", gamecode));
+
+  
+  const querySnapshot = await getDocs(q);
+  let returnVal = "";
+  querySnapshot.forEach((doc) => {
+    console.log(doc.id, " => ", doc.data());
+    returnVal = doc.data().id;
+  });
+return returnVal;
+};
+
+
+
+
+
+export const createGameDoc = async(game : GameInfo): Promise<string> => {
 
   try {
 
     const newGameRef = doc(collection(db, "games"));
+
+    // make a 5 digit game code that has letters and number
+    const code = Math.random().toString(36).substring(2, 7).toUpperCase();
 
     const dataToAdd = {
         id: newGameRef.id,
@@ -78,6 +108,7 @@ export const createGameDoc = async(game : GameInfo) => {
         maxPlayers: game.playerCount,
         currCount: 0,
         ready: false,
+        gameCode: code,
         winner: "",
     }
 
@@ -85,17 +116,37 @@ export const createGameDoc = async(game : GameInfo) => {
 
 
     for (let i = 0; i < game.objectives.length; i++) {
+        console.log("here1")
         const obj : ObjectiveType = game.objectives[i];
+        console.log("here2")
         const imageUrl = await uploadImageToStorageBucket(`games/${newGameRef.id}/${i}`, obj.photoUrl)
+        console.log("here3")
         const newObjectiveRef = doc(collection(db, `games/${newGameRef.id}/objectives`));
+        console.log("here4")
         await setDoc(newObjectiveRef, {
             image: imageUrl,
             latitude: obj.latitude,
             longitude: obj.longitude
         })
+        console.log("here5")
     }
+    return newGameRef.id;
   } catch (error) {
     console.log(error);
+    return error;
+  }
+
+}
+
+export const getGameInfoFromDB = async (gameID: string): Promise<GameDBType> => {
+  try {
+    console.log("gameID", gameID)
+    const gameInfo = await getDoc(doc(db, `games/${gameID}`));
+    if (!gameInfo.exists()) return;
+    return gameInfo.data() as GameDBType;
+  } catch (error) {
+    console.log(error);
+    return error;
   }
 }
 

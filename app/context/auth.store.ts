@@ -86,7 +86,7 @@ export const authSignUp = async (data: SignUpFormState) => {
   }
 };
 
-const _getUserId = async () => {
+export const _getUserId = async () => {
   const uid = await auth.currentUser.uid;
   return uid;
 };

@@ -8,12 +8,24 @@ import {
 import ScreenWrapperComp from '../../../components/shared/ScreenWrapperComp';
 import { Button, TextInput } from 'react-native-paper';
 import { useRouter } from 'expo-router';
+import { searchThroughDocs } from '../../../firebase/firebase.function';
+
 
 export default function joingame () {
   const router = useRouter()
-  const joinGameClick = () => {
-    router.push("/game")
+  const joinGameClick =async () => {
+    const gameID = await searchThroughDocs(userIn);
+
+    // router.push("/game")
+    if (!gameID) {
+      alert(
+        "Game not found Bitch"
+      )
+      return
+    } 
+      router.push( { pathname: "/joingame/lobby", params: { gameId: gameID  } });
   }
+  const [userIn, setInput] = useState("");
 
     return (
         <ScreenWrapperComp>
@@ -24,9 +36,11 @@ export default function joingame () {
             <TextInput 
                 style={styles.input}
                 placeholder='Enter Game Code'
+                value={userIn}
+                onChangeText={(text) => setInput(text)}
             />
     
-            {/* Button to join the game */}
+            {/* Button to join the ga)me */}
             <Button mode='contained' icon="plus" onPress={joinGameClick}>
                 Join Game
             </Button>
