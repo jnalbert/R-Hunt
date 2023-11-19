@@ -88,7 +88,45 @@ export const searchThroughDocs = async(gamecode : string): Promise<string>=> {
 return returnVal;
 };
 
+export const getUserData = async (userId: string) => {
+  try {
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
 
+export const addUserToGameDoc = async(gameid: string, userid: string) => {
+  // const usersRef = getDoc(db, "users");
+  // // const q = query(usersRef, where("id", "==", userid));
+
+  
+  // let returnVal = "";
+  //   const ref =  doc(collection(db, `games/${gameid}/players`), userid);
+
+  //   const docRef = doc(db, "users", userid);
+  //   const docSnap = await getDoc(docRef);
+    
+
+  //   await setDoc(ref, {
+  //     playerID: userid,
+  //     username: docSnap.data().username,
+  //     objectsCompleted: [],
+  //     location: docSnap.data().profileUrl,
+  //     profilePic: docSnap.data().,
+      
+  //   })
+
+
+  //   console.log(doc.id, " => ");
+  //   returnVal = doc.data().id;
+
+
+
+  // });
+
+  // return ;
+}
 
 
 

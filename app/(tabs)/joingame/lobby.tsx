@@ -28,13 +28,16 @@ const lobby: FC = () => {
     // send user to lobby with this: router.push( { pathname: "/creategame/lobby", params: { gameId: gameId  } });
     // (app\(tabs)\creategame\create.tsx)
     // do it with joinGameDoc function, "const gameId = await joinGameDoc(gameInfo);"
-
-
     /*
     Where the shit is at:
     searchThroughDocs: firebase.function.ts
-
     */
+
+
+
+    
+    
+
 
   const [gameInfo, setGameInfo] = useState<GameDBType>({
     name: "",
