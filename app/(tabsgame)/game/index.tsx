@@ -61,6 +61,7 @@ const fakeUserData: PlayerInGameDB[] = [
 export default function Game({fakeUserData})  {
     const [fabColor, setFabColor] = useState("");
     let [distance, setDistance] = useState(100);
+    const [userData, setUserData] = useState(fakeUserData);
 
     let [currentLocation, setCurrentLocation] = useState(null);
 
@@ -115,7 +116,7 @@ export default function Game({fakeUserData})  {
             }
             currentLocation = await Location.watchPositionAsync({ accuracy: Location.Accuracy.Highest, timeInterval: 1000, distanceInterval: 0 }, (loc) => {
                 setCurrentLocation(loc.coords)
-                const distance = calculateDistance(loc.coords, Glasgow)
+                const distance = calculateDistance(loc.coords, DundeeA)
                 setDistance(distance)
                 getDistance(distance)
                 });
@@ -161,18 +162,18 @@ export default function Game({fakeUserData})  {
                         } }
                         title="Your Location"
                     />
-                    {/* {fakeUserData.map((location, index) => (
+                   {userData && userData.map((location, index) => (
                         <Marker
-                            key={index}
                             coordinate={{
-                                latitude: location ? location.latitude : undefined,
-                                longitude: location ? location.longitude: undefined,
+                                latitude: location.latitude,
+                                longitude: location.longitude,
                             }}
                             title={`${location.title}'s location`}
                             description={`${location.objectsCompleted.length} objectives completed`}
                         />
 
-                    ))} */}
+                    ))}
+                        
             </MapView>
             <FAB
                 label={distance.toString()}
