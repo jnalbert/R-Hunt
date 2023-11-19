@@ -21,19 +21,27 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: colors.tint,
+        headerShown: false
       }}>
       <Tabs.Screen
-        name="creategame"
+        name="camera"
         options={{
-          headerShown: false,
-          title: 'Create Game',
+          title: 'Camera',
+          tabBarIcon: ({color}) => <TabBarIcon name="camera" color={color} />
         }}
       />
       <Tabs.Screen
-        name="joingame"
+        name="game"
         options={{
-          title: 'Join Game',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Map',
+          tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="objectivechecklist"
+        options={{
+          title: 'CheckList',
+          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
       />
     </Tabs>
