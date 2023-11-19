@@ -4,8 +4,8 @@ import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import ScreenWrapperComp from '../../../components/shared/ScreenWrapperComp';
 import * as Location from 'expo-location'
 import {FAB} from 'react-native-paper'
-import Objective from '../../../firebase/Types/DBTypes';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import { PlayerInGameDB } from '../../../firebase/types/DBTypes';
 
 
 const BellTower = {
@@ -29,13 +29,40 @@ const DundeeA = {
     longitude: -117.32461,
 }
 
+const fakeUserData: PlayerInGameDB[] = [
+    {
+        playerId: "23423",
+        username: "test",
+        objectsCompleted: ["32r23", "2342", "32423"],
+        latitude: 32.978505,
+        longitude: -116.32461,
+        profilePic: "https://shorturl.at/bjqX6",
+    },
+    {
+        playerId: "2323423",
+        username: "test1",
+        objectsCompleted: ["32r23", "2342"],
+        latitude: 37.978505,
+        longitude: -118.32461,
+        profilePic: "https://shorturl.at/bjqX6",
+    },
+    {
+        playerId: "23234223",
+        username: "test2",
+        objectsCompleted: ["32r23", "2342"],
+        latitude: 37.973505,
+        longitude: -118.37461,
+        profilePic: "https://shorturl.at/bjqX6",
+    }
+]
 
 
-export default function Game() {
+export default function Game({fakeUserData})  {
     const [fabColor, setFabColor] = useState("");
     let [distance, setDistance] = useState(100);
 
     let [currentLocation, setCurrentLocation] = useState(null);
+
 
     const [mapRegion, setMapRegion] = useState({
         latitude: 33.975823,
@@ -116,11 +143,22 @@ export default function Game() {
                         } }
                         title="Your Location"
                     />
+                    {/* {fakeUserData.map((location, index) => (
+                        <Marker
+                            key={index}
+                            coordinate={{
+                                latitude: location ? location.latitude : undefined,
+                                longitude: location ? location.longitude: undefined,
+                            }}
+                            title={`${location.title}'s location`}
+                            description={`${location.objectsCompleted.length} objectives completed`}
+                        />
+
+                    ))} */}
             </MapView>
             <FAB
                 label={distance.toString()}
                 style={[styles.fab, {backgroundColor: fabColor}]}
-                onPress={() => {console.log("Pressed")}}
             />
         </View>
     </ScreenWrapperComp>
