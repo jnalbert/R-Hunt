@@ -4,8 +4,9 @@ import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import ScreenWrapperComp from '../../../components/shared/ScreenWrapperComp';
 import * as Location from 'expo-location'
 import {FAB} from 'react-native-paper'
-import {ObjectiveDBType} from '../../../firebase/types/DBTypes';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import { PlayerInGameDB } from '../../../firebase/types/DBTypes';
+import { LocationState } from '../locationState';
+import { useLocalSearchParams } from 'expo-router';
 
 
 const BellTower = {
@@ -29,13 +30,48 @@ const DundeeA = {
     longitude: -117.32461,
 }
 
+const fakeUserData: PlayerInGameDB[] = [
+    {
+        playerId: "23423",
+        username: "test",
+        objectsCompleted: ["32r23", "2342", "32423"],
+        latitude: 32.978505,
+        longitude: -116.32461,
+        profilePic: "https://shorturl.at/bjqX6",
+    },
+    {
+        playerId: "2323423",
+        username: "test1",
+        objectsCompleted: ["32r23", "2342"],
+        latitude: 37.978505,
+        longitude: -118.32461,
+        profilePic: "https://shorturl.at/bjqX6",
+    },
+    {
+        playerId: "23234223",
+        username: "test2",
+        objectsCompleted: ["32r23", "2342"],
+        latitude: 37.973505,
+        longitude: -118.37461,
+        profilePic: "https://shorturl.at/bjqX6",
+    }
+]
 
 
-export default function Game() {
+export default function Game({fakeUserData})  {
     const [fabColor, setFabColor] = useState("");
     let [distance, setDistance] = useState(100);
 
     let [currentLocation, setCurrentLocation] = useState(null);
+
+    const gameId = useLocalSearchParams();
+
+    useEffect(() => {
+      LocationState.update((s) => {
+        s.gameId = gameId.gameId as string;
+      });
+    }, [gameId])
+
 
     const [mapRegion, setMapRegion] = useState({
         latitude: 33.975823,
@@ -71,6 +107,7 @@ export default function Game() {
     //   };
 
     useEffect(() => {
+        console.log('hi')
         let _getLocationAsync = async () => {
             let { status } = await Location.getForegroundPermissionsAsync();
             if (status !== 'granted') {
@@ -91,17 +128,27 @@ export default function Game() {
     const getDistance = (distance: number) => {
         if(distance <= 50) {
             setFabColor("green")
+            LocationState.update((s) => {
+              s.nearObject = true;
+            });
         }
         else if(distance <= 100) {
             setFabColor("yellow")
+            LocationState.update((s) => {
+              s.nearObject = false;
+            });
         }
         else{
             setFabColor("red");
+            LocationState.update((s) => {
+              s.nearObject = false;
+            });
         }
     }
     
 
   return (
+    <ScreenWrapperComp>
         <View style={styles.container}>
             <MapView 
                 style={styles.map} 
@@ -114,13 +161,25 @@ export default function Game() {
                         } }
                         title="Your Location"
                     />
+                    {/* {fakeUserData.map((location, index) => (
+                        <Marker
+                            key={index}
+                            coordinate={{
+                                latitude: location ? location.latitude : undefined,
+                                longitude: location ? location.longitude: undefined,
+                            }}
+                            title={`${location.title}'s location`}
+                            description={`${location.objectsCompleted.length} objectives completed`}
+                        />
+
+                    ))} */}
             </MapView>
             <FAB
                 label={distance.toString()}
                 style={[styles.fab, {backgroundColor: fabColor}]}
-                onPress={() => {console.log("Pressed")}}
             />
         </View>
+    </ScreenWrapperComp>
   );
 } 
 
@@ -128,7 +187,7 @@ export default function Game() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: "90%",
+    
   },
   map: {
     width: Dimensions.get('window').width,
@@ -136,12 +195,9 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 70,
-    width: 70,
-    alignSelf: 'center',
-    bottom: 15,
+    margin: 16,
+    right: 140,
+    bottom: -20,
     borderRadius: 50,
   },
 });

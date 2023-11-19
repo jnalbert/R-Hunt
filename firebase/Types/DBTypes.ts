@@ -16,3 +16,13 @@ export interface GameDBType {
   winner: string
   gameCode: string
 }
+
+export interface PlayerInGameDB {
+  playerId: string
+  username: string
+  objectsCompleted: string[]
+  latitude: number
+  longitude: number
+  profilePic: string
+ }
+ 
