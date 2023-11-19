@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import ScreenWrapperComp from '../../../components/shared/ScreenWrapperComp';
 import * as Location from 'expo-location'
 import {FAB} from 'react-native-paper'
-import Objective from '../../../firebase/Types/DBTypes';
+import {ObjectiveDBType} from '../../../firebase/types/DBTypes';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 
