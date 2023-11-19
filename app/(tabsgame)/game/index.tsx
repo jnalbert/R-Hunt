@@ -5,6 +5,8 @@ import ScreenWrapperComp from '../../../components/shared/ScreenWrapperComp';
 import * as Location from 'expo-location'
 import {FAB} from 'react-native-paper'
 import { PlayerInGameDB } from '../../../firebase/types/DBTypes';
+import { LocationState } from '../locationState';
+import { useLocalSearchParams } from 'expo-router';
 
 
 const BellTower = {
@@ -61,6 +63,14 @@ export default function Game({fakeUserData})  {
     let [distance, setDistance] = useState(100);
 
     let [currentLocation, setCurrentLocation] = useState(null);
+
+    const gameId = useLocalSearchParams();
+
+    useEffect(() => {
+      LocationState.update((s) => {
+        s.gameId = gameId.gameId as string;
+      });
+    }, [gameId])
 
 
     const [mapRegion, setMapRegion] = useState({
