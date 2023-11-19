@@ -17,7 +17,7 @@ export default function login() {
   const singIntClick = async () => {
     if (!formState.username) {
       Alert.alert('Please enter a username');
-      return
+      return;
     }
     if (!formState.password) {
       Alert.alert('Please enter a password');

@@ -168,7 +168,7 @@ export default function CreateScreen() {
           </Button>
         )}
       </View>
-
+{/* 
       <Button
         onPress={async () => {
           await authSignOut();
@@ -176,7 +176,7 @@ export default function CreateScreen() {
         }}
       >
         Go to Login page
-      </Button>
+      </Button> */}
 
       <Button
         icon="camera"
