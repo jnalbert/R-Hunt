@@ -16,14 +16,15 @@ export default function joingame () {
   const joinGameClick =async () => {
     const gameID = await searchThroughDocs(userIn);
 
-    // router.push("/game")
-    if (!gameID) {
-      alert(
-        "Game not found Bitch"
-      )
-      return
-    } 
-      router.push( { pathname: "/joingame/lobby", params: { gameId: gameID  } });
+    // // router.push("/game")
+    // if (!gameID) {
+    //   alert(
+    //     "Game not found Bitch"
+    //   )
+    //   return
+    // } 
+    //   router.push( { pathname: "/joingame/lobby", params: { gameId: gameID  } });
+    router.push({ pathname: "/game", params: { gameId: gameID  }})
   }
   const [userIn, setInput] = useState("");
 
