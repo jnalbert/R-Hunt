@@ -1,14 +1,17 @@
 import {StatusBar} from 'expo-status-bar'
-import React from 'react'
-import {StyleSheet, Text, View, TouchableOpacity, Alert, ImageBackground, Image} from 'react-native'
+import React, { useEffect } from 'react'
+import {StyleSheet, View, TouchableOpacity, Alert, ImageBackground, Image} from 'react-native'
+import {Text} from 'react-native-paper'
 import {Camera} from 'expo-camera'
+import { useAppTheme } from '../../_layout'
+import { LocationState } from '../locationState'
 let camera: Camera
-export default function App() {
+export default function CameraBitch() {
+
+  // get the primary color
   const [startCamera, setStartCamera] = React.useState(false)
   const [previewVisible, setPreviewVisible] = React.useState(false)
   const [capturedImage, setCapturedImage] = React.useState<any>(null)
-  const [cameraType, setCameraType] = React.useState(Camera.Constants.Type.back)
-  const [flashMode, setFlashMode] = React.useState('off')
 
   const __startCamera = async () => {
     const {status} = await Camera.requestCameraPermissionsAsync()
@@ -32,22 +35,16 @@ export default function App() {
     setPreviewVisible(false)
     __startCamera()
   }
-  const __handleFlashMode = () => {
-    if (flashMode === 'on') {
-      setFlashMode('off')
-    } else if (flashMode === 'off') {
-      setFlashMode('on')
-    } else {
-      setFlashMode('auto')
+
+  const { nearObject } = LocationState.useState();
+  useEffect(() => {
+    if(nearObject && !startCamera) {
+      __startCamera();
     }
-  }
-  const __switchCamera = () => {
-    if (cameraType === 'back') {
-      setCameraType('front')
-    } else {
-      setCameraType('back')
-    }
-  }
+  }, [nearObject])
+  const {
+    colors: { primary },
+  } = useAppTheme();
   return (
     <View style={styles.container}>
       {startCamera ? (
@@ -61,8 +58,6 @@ export default function App() {
             <CameraPreview photo={capturedImage} savePhoto={__savePhoto} retakePicture={__retakePicture} />
           ) : (
             <Camera
-              type={cameraType}
-              flashMode={flashMode}
               style={{flex: 1}}
               ref={(r) => {
                 camera = r
@@ -76,50 +71,6 @@ export default function App() {
                   flexDirection: 'row'
                 }}
               >
-                <View
-                  style={{
-                    position: 'absolute',
-                    left: '5%',
-                    top: '10%',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={__handleFlashMode}
-                    style={{
-                      backgroundColor: flashMode === 'off' ? '#000' : '#fff',
-                      borderRadius: '50%',
-                      height: 25,
-                      width: 25
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 20
-                      }}
-                    >
-                      ⚡️
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={__switchCamera}
-                    style={{
-                      marginTop: 20,
-                      borderRadius: '50%',
-                      height: 25,
-                      width: 25
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 20
-                      }}
-                    >
-                      {cameraType === 'front' ? '🤳' : '📷'}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
                 <View
                   style={{
                     position: 'absolute',
@@ -163,7 +114,8 @@ export default function App() {
             alignItems: 'center'
           }}
         >
-          <TouchableOpacity
+          <Text variant='headlineMedium' style={{textAlign: 'center', color: primary}} >Go near an objective for the camera to open</Text>
+          {/* <TouchableOpacity
             onPress={__startCamera}
             style={{
               width: 130,
@@ -184,7 +136,7 @@ export default function App() {
             >
               Take picture
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       )}
 
