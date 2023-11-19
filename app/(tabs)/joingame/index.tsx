@@ -8,7 +8,8 @@ import {
 import ScreenWrapperComp from '../../../components/shared/ScreenWrapperComp';
 import { Button, TextInput } from 'react-native-paper';
 import { useRouter } from 'expo-router';
-import { searchThroughDocs } from '../../../firebase/firebase.function';
+import { addUserToGameDoc, searchThroughDocs } from '../../../firebase/firebase.function';
+import { _getUserId } from '../../context/auth.store';
 
 
 export default function joingame () {
@@ -16,15 +17,17 @@ export default function joingame () {
   const joinGameClick =async () => {
     const gameID = await searchThroughDocs(userIn);
 
-    // // router.push("/game")
-    // if (!gameID) {
-    //   alert(
-    //     "Game not found Bitch"
-    //   )
-    //   return
-    // } 
-    //   router.push( { pathname: "/joingame/lobby", params: { gameId: gameID  } });
-    router.push({ pathname: "/game", params: { gameId: gameID  }})
+    // router.push("/game")
+    if (!gameID) {
+      alert(
+        "Game not found"
+      )
+      return
+    } 
+      router.push( { pathname: "/joingame/lobby", params: { gameId: gameID  } });
+      //everytime someone joins: Create a new player doc, and add it to Gamedoc. ID of the player doc = userID.
+      addUserToGameDoc(gameID, await _getUserId());
+
   }
   const [userIn, setInput] = useState("");
 
