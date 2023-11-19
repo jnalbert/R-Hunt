@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import ScreenWrapperComp from "../../../components/shared/ScreenWrapperComp";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { Button, Text } from "react-native-paper";
 import { GameDBType } from "../../../firebase/types/DBTypes";
 import { useAppTheme } from "../../_layout";
@@ -52,7 +52,7 @@ const lobby: FC = () => {
         console.log("doc exits", gameInfo)
         setGameInfo(gameInfo);
         if (gameInfo.ready || gameInfo.currCount === gameInfo.maxPlayers) {
-          console.log("game is ready")
+          router.push( { pathname: "/game", params: { gameId: gameId.gameId  } });
         }
       }
       
