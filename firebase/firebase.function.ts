@@ -19,6 +19,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { GameInfo, ObjectiveType } from "../app/(tabs)/creategame/create";
 import { GameDBType, ObjectiveDBType } from "./types/DBTypes";
 
+
 export const uploadImageToStorageBucket = async (path: string, url: string): Promise<string> => {
   // add image to storage bucket and return the download URl
   try {
@@ -71,9 +72,25 @@ export const addPastGameToUserDoc = async (id: string, gameID: string, place: st
     // }
 };
 
-// export const uploadImageToStorageBucket = async() => {
-    
-// } 
+
+//search through fireBase game collection.
+export const searchThroughDocs = async(gamecode : string): Promise<string>=> {
+  const citiesRef = collection(db, "games");
+  const q = query(citiesRef, where("gameCode", "==", gamecode));
+
+  
+  const querySnapshot = await getDocs(q);
+  let returnVal = "";
+  querySnapshot.forEach((doc) => {
+    console.log(doc.id, " => ", doc.data());
+    returnVal = doc.data().id;
+  });
+return returnVal;
+};
+
+
+
+
 
 export const createGameDoc = async(game : GameInfo): Promise<string> => {
 

@@ -21,7 +21,8 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: colors.tint,
-        headerShown: false
+        headerShown: false,
+
       }}>
       <Tabs.Screen
         name="camera"
