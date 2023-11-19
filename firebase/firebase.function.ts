@@ -17,7 +17,7 @@ import {
   } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { GameInfo, ObjectiveType } from "../app/(tabs)/creategame/create";
-import { GameDBType } from "./types/DBTypes";
+import { GameDBType, ObjectiveDBType } from "./types/DBTypes";
 
 export const uploadImageToStorageBucket = async (path: string, url: string): Promise<string> => {
   // add image to storage bucket and return the download URl
@@ -123,10 +123,24 @@ export const createGameDoc = async(game : GameInfo): Promise<string> => {
 
 export const getGameInfoFromDB = async (gameID: string): Promise<GameDBType> => {
   try {
-    console.log("gameID", gameID)
     const gameInfo = await getDoc(doc(db, `games/${gameID}`));
     if (!gameInfo.exists()) return;
     return gameInfo.data() as GameDBType;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
+
+export const getGameObjectives = async (gameID: string): Promise<any> => {
+  try {
+    const objectives = await getDocs(collection(db, `games/${gameID}/objectives`));
+    return objectives.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data()
+      }
+  });
   } catch (error) {
     console.log(error);
     return error;
