@@ -128,12 +128,21 @@ export default function Game({fakeUserData})  {
     const getDistance = (distance: number) => {
         if(distance <= 50) {
             setFabColor("green")
+            LocationState.update((s) => {
+              s.nearObject = true;
+            });
         }
         else if(distance <= 100) {
             setFabColor("yellow")
+            LocationState.update((s) => {
+              s.nearObject = false;
+            });
         }
         else{
             setFabColor("red");
+            LocationState.update((s) => {
+              s.nearObject = false;
+            });
         }
     }
     
