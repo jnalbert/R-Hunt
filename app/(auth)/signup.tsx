@@ -42,14 +42,26 @@ export default function login() {
       Alert.alert("Please select a profile picture");
       return;
     }
+    if (formState.password.length < 6) {
+      Alert.alert("Passwords needs to be 6 characters long");
+      return;
+    }
+    
+
+    console.log("we finished0???");
 
     const res = await authSignUp(formState);
-    if (res.error) {
+    console.log("we finished0???");
+    if (res.error) { 
+      console.log("we finished1222???");
+      console.log(res.error)
       Alert.alert(res.error);
       return;
     }
+
+    console.log("we finished1???");
     router.push("/");
-    
+    console.log("we finished2???");
   };
 
   const handlePickProfilePicture = async () => {
