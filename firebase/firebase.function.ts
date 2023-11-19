@@ -90,42 +90,39 @@ return returnVal;
 
 export const getUserData = async (userId: string) => {
   try {
-    
+    const userDoc = await getDoc(doc(db, `users/${userId}`));
+    return userDoc.data();
   } catch (error) {
     console.log(error)
   }
 }
 
-export const addUserToGameDoc = async(gameid: string, userid: string) => {
-  // const usersRef = getDoc(db, "users");
-  // // const q = query(usersRef, where("id", "==", userid));
-
+export const addUserToGameDoc = async(gameId: string, userId: string) => {
   
-  // let returnVal = "";
-  //   const ref =  doc(collection(db, `games/${gameid}/players`), userid);
+  const gamePlayerRef =  doc(collection(db, `games/${gameId}/players`), userId);
 
-  //   const docRef = doc(db, "users", userid);
-  //   const docSnap = await getDoc(docRef);
+  const userData = await getUserData(userId);
+
+  await setDoc(gamePlayerRef, {
+    playerID: userId,
+    username: userData.username,
+    objectsCompleted: [],
+    latitude: 0,
+    longitude: 0,
+    profilePic: userData.profileUrl,
     
+  })
 
-  //   await setDoc(ref, {
-  //     playerID: userid,
-  //     username: docSnap.data().username,
-  //     objectsCompleted: [],
-  //     location: docSnap.data().profileUrl,
-  //     profilePic: docSnap.data().,
-      
-  //   })
+  // update game doc with one more person
+  const gameDocRef = doc(db, `games/${gameId}`);
+  const gameDocData = (await getDoc(gameDocRef)).data();
 
+  const isReady = gameDocData.currCount + 1 === gameDocData.maxPlayers;
 
-  //   console.log(doc.id, " => ");
-  //   returnVal = doc.data().id;
-
-
-
-  // });
-
-  // return ;
+  updateDoc(gameDocRef, {
+    currCount: increment(1),
+    isReady: isReady
+  })
 }
 
 

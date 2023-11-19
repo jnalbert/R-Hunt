@@ -4,7 +4,6 @@ import ScreenWrapperComp from "../../../components/shared/ScreenWrapperComp";
 import { useLocalSearchParams } from "expo-router";
 import { Button, Text } from "react-native-paper";
 import { GameDBType } from "../../../firebase/types/DBTypes";
-import { getGameInfoFromDB } from "../../../firebase/firebase.function";
 import { useAppTheme } from "../../_layout";
 import { _getUserId } from "../../context/auth.store";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -13,7 +12,7 @@ import { db } from '../../../firebase/Firebase.Config';
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    width: "80%",
+    width: "100%",
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
@@ -32,12 +31,6 @@ const lobby: FC = () => {
     Where the shit is at:
     searchThroughDocs: firebase.function.ts
     */
-
-
-
-    
-    
-
 
   const [gameInfo, setGameInfo] = useState<GameDBType>({
     name: "",
@@ -82,18 +75,6 @@ const lobby: FC = () => {
         <Text variant="headlineMedium" style={{marginTop: 30, fontWeight: '500'}}>{gameInfo.currCount} / {gameInfo.maxPlayers}</Text>
         <Text variant="titleMedium" style={{marginTop: 30}}>players have joined</Text>
       </View>
-      <Button
-        mode="contained"
-        style={{
-          marginTop: 20,
-          width: "60%",
-          alignSelf: "center",
-          position: "absolute",
-          bottom: 0,
-        }}
-      >
-        Close Game
-      </Button>
     </ScreenWrapperComp>
   );
 };
