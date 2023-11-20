@@ -125,19 +125,27 @@ export default function CreateScreen() {
           mode="outlined"
           label="Game Name"
           value={gameInfo.name}
-          onChangeText={(text) => setGameInfo({ ...gameInfo, name: text })}
+          onChangeText={(text) => setGameInfo({ ...gameInfo, name: text })} //this just accepts anything
         />
         <TextInput
           style={{ marginTop: 15 }}
           mode="outlined"
           label="Player Count"
           value={
+            
             gameInfo.playerCount.toString() === "0"
               ? ""
               : gameInfo.playerCount.toString()
           }
-          onChangeText={(text) =>
-            setGameInfo({ ...gameInfo, playerCount: Number(text) })
+          onChangeText={(text) => { //made it so the thing doesn't crash when you enter wrong types
+              if (!isNaN(parseFloat(text)))  {
+                setGameInfo({ ...gameInfo, playerCount: Number(text) });
+              } else if (text === "") {
+                setGameInfo({...gameInfo, playerCount: 0});
+              } else {
+                setGameInfo({...gameInfo, playerCount:0});
+              }
+            }
           }
         />
         <Text
