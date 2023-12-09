@@ -106,6 +106,8 @@ export default function CreateScreen() {
     setIsLoading(false);
   };
 
+
+
   const createGamePress = async () => {
     if (gameInfo.name === "") return Alert.alert("Please enter a game name");
     if (gameInfo.playerCount === 0)
@@ -113,11 +115,14 @@ export default function CreateScreen() {
     if (gameInfo.objectives.length === 0)
       return Alert.alert("Please add at least one objective");
 
+
     const gameId = await createGameDoc(gameInfo);
     // const gameId = '9WwTrQBUhI6dqx5lgQgk';
     router.push( { pathname: "/creategame/lobby", params: { gameId: gameId  } });
   };
 
+  
+  
   return (
     <ScreenWrapperComp>
       <View style={styles.wrapper}>
@@ -138,15 +143,20 @@ export default function CreateScreen() {
               : gameInfo.playerCount.toString()
           }
           onChangeText={(text) => { //made it so the thing doesn't crash when you enter wrong types
-              if (!isNaN(parseFloat(text)))  {
-                setGameInfo({ ...gameInfo, playerCount: Number(text) });
-              } else if (text === "") {
-                setGameInfo({...gameInfo, playerCount: 0});
-              } else {
-                setGameInfo({...gameInfo, playerCount:0});
-              }
+
+            // text=text.replace(/[^0-9]/g, '');
+              setGameInfo({ ...gameInfo, playerCount: Number(text.replace(/[^0-9]/g, '')) });
+              // if (!isNaN(parseFloat(text)))  {
+              //   setGameInfo({ ...gameInfo, playerCount: Number(text) });
+              // } else if (text === "") {
+              //   setGameInfo({...gameInfo, playerCount: 0});
+              // } else {
+              //   setGameInfo({...gameInfo, playerCount:0});
+              // }
             }
           }
+
+          
         />
         <Text
           variant="titleLarge"
