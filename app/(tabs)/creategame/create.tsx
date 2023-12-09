@@ -94,8 +94,8 @@ export default function CreateScreen() {
     setGameInfo({
       ...gameInfo,
       objectives: [
-        ...gameInfo.objectives,
-        {
+        ...gameInfo.objectives, //unpacking what's already in there
+        { //and now adding this new one
           photoUrl: imageUrl.assets[0].uri,
           number: gameInfo.objectives.length + 1,
           longitude: location.coords.longitude,

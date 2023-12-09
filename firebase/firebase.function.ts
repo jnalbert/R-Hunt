@@ -20,6 +20,8 @@ import { GameInfo, ObjectiveType } from "../app/(tabs)/creategame/create";
 import { GameDBType, ObjectiveDBType } from "./types/DBTypes";
 
 
+
+
 export const uploadImageToStorageBucket = async (path: string, url: string): Promise<string> => {
   // add image to storage bucket and return the download URl
   try {
@@ -73,7 +75,7 @@ export const addPastGameToUserDoc = async (id: string, gameID: string, place: st
 };
 
 
-//search through fireBase game collection.
+//search through fireBase game collection, check if there's a game that exists, then return the docID of that game.
 export const searchThroughDocs = async(gamecode : string): Promise<string>=> {
   const citiesRef = collection(db, "games");
   const q = query(citiesRef, where("gameCode", "==", gamecode));
@@ -173,6 +175,44 @@ export const createGameDoc = async(game : GameInfo): Promise<string> => {
 
 }
 
+
+async function deleteCollection(db, collectionPath, batchSize) {
+  const collectionRef = db.collection(collectionPath);
+  const query = collectionRef.orderBy('__name__').limit(batchSize);
+
+  return new Promise((resolve, reject) => {
+    deleteQueryBatch(db, query, resolve).catch(reject);
+  });
+}
+
+async function deleteQueryBatch(db, query, resolve) {
+  const snapshot = await query.get();
+
+  const batchSize = snapshot.size;
+  if (batchSize === 0) {
+    // When there are no documents left, we are done
+    resolve();
+    return;
+  }
+
+  // Delete documents in a batch
+  const batch = db.batch();
+  snapshot.docs.forEach((doc) => {
+    batch.delete(doc.ref);
+  });
+  await batch.commit();
+
+  // Recurse on the next process tick, to avoid
+  // exploding the stack.
+  process.nextTick(() => {
+    deleteQueryBatch(db, query, resolve);
+  });
+}
+
+
+
+
+
 export const getGameInfoFromDB = async (gameID: string): Promise<GameDBType> => {
   try {
     const gameInfo = await getDoc(doc(db, `games/${gameID}`));
@@ -183,6 +223,8 @@ export const getGameInfoFromDB = async (gameID: string): Promise<GameDBType> => 
     return error;
   }
 }
+
+
 
 export const getGameObjectives = async (gameID: string): Promise<any> => {
   try {
@@ -198,6 +240,8 @@ export const getGameObjectives = async (gameID: string): Promise<any> => {
     return error;
   }
 }
+
+
 
 /*
 export const addGameDoc = async(id: string, gameID: string, place: string, objective_completed: string, ) => {

@@ -3,10 +3,10 @@ import { UnifiedHeader } from "../../../components/shared/unifiedHeader";
 
 export default function Layout() {
  return <Stack
-    screenOptions={{
-        header: () => (
-            <UnifiedHeader inc="Bro wat"/>
-        )
-    }}
+ screenOptions={{
+    header: () => (
+        <UnifiedHeader inc="Setting"/>
+    )
+}}
 ></Stack>;
 }

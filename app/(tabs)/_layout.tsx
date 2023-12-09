@@ -26,7 +26,7 @@ export default function TabLayout() {
         name="creategame"
         options={{
           headerShown: false,
-          title: 'Create Game',
+          title: 'Shouldnt appear',
         }}
       />
       <Tabs.Screen
@@ -34,8 +34,20 @@ export default function TabLayout() {
         options={{
           title: 'Join Game',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false,
         }}
       />
+
+      <Tabs.Screen
+        name="setting"
+        options={{
+          title: 'Setting',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false,
+        }}
+        
+      />
+
     </Tabs>
   );
 }
