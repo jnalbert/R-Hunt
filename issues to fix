@@ -1,0 +1,8 @@
+1. Once you create a game, you can still doubleback to "createGame/create.tsx" page when you click "Create Game" at the bottom page bar. You shouldn't be allowed to double back there without closing your game. (cuz then if you click create Game again it'll just crash. Make it so it doesn't crash.)
+2. The close game won't work. You simply can't close the game once you created it xd. Make it so you're kicked out of lobby when game is closed.
+3. You have to reach the number of players, or the game won't start. Make it so you can start the game, even when max players aren't reached.
+4. You literally can't leave the game after joining. Make it so you can leave the game.
+
+5. If a player logs off or just drops offline, it'll still display as the player being in game. The "2/12 players have joined" thing simlpy never updates. (need knowledge of react, likely, alongside firebase.)
+
+6. Fully implement the database --- currently it seems the playersCollection/playerDoc/playerPastGameCollection DNE. Same for gameCollection/gameDoc/playerCollectionForThatGame, also doesn't exist.
