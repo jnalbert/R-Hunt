@@ -94,8 +94,8 @@ export default function CreateScreen() {
     setGameInfo({
       ...gameInfo,
       objectives: [
-        ...gameInfo.objectives,
-        {
+        ...gameInfo.objectives, //unpacking what's already in there
+        { //and now adding this new one
           photoUrl: imageUrl.assets[0].uri,
           number: gameInfo.objectives.length + 1,
           longitude: location.coords.longitude,
@@ -106,6 +106,8 @@ export default function CreateScreen() {
     setIsLoading(false);
   };
 
+
+
   const createGamePress = async () => {
     if (gameInfo.name === "") return Alert.alert("Please enter a game name");
     if (gameInfo.playerCount === 0)
@@ -113,11 +115,14 @@ export default function CreateScreen() {
     if (gameInfo.objectives.length === 0)
       return Alert.alert("Please add at least one objective");
 
+
     const gameId = await createGameDoc(gameInfo);
     // const gameId = '9WwTrQBUhI6dqx5lgQgk';
     router.push( { pathname: "/creategame/lobby", params: { gameId: gameId  } });
   };
 
+  
+  
   return (
     <ScreenWrapperComp>
       <View style={styles.wrapper}>
@@ -125,20 +130,33 @@ export default function CreateScreen() {
           mode="outlined"
           label="Game Name"
           value={gameInfo.name}
-          onChangeText={(text) => setGameInfo({ ...gameInfo, name: text })}
+          onChangeText={(text) => setGameInfo({ ...gameInfo, name: text })} //this just accepts anything
         />
         <TextInput
           style={{ marginTop: 15 }}
           mode="outlined"
           label="Player Count"
           value={
+            
             gameInfo.playerCount.toString() === "0"
               ? ""
               : gameInfo.playerCount.toString()
           }
-          onChangeText={(text) =>
-            setGameInfo({ ...gameInfo, playerCount: Number(text) })
+          onChangeText={(text) => { //made it so the thing doesn't crash when you enter wrong types
+
+            // text=text.replace(/[^0-9]/g, '');
+              setGameInfo({ ...gameInfo, playerCount: Number(text.replace(/[^0-9]/g, '')) });
+              // if (!isNaN(parseFloat(text)))  {
+              //   setGameInfo({ ...gameInfo, playerCount: Number(text) });
+              // } else if (text === "") {
+              //   setGameInfo({...gameInfo, playerCount: 0});
+              // } else {
+              //   setGameInfo({...gameInfo, playerCount:0});
+              // }
+            }
           }
+
+          
         />
         <Text
           variant="titleLarge"

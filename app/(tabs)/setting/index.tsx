@@ -24,9 +24,9 @@ export default function joingame () {
       )
       return
     } 
-    router.push( { pathname: "/joingame/lobby", params: { gameId: gameID  } });
-    //everytime someone joins: Create a new player doc, and add it to Gamedoc. ID of the player doc = userID.
-    addUserToGameDoc(gameID, await _getUserId());
+      router.push( { pathname: "/joingame/lobby", params: { gameId: gameID  } });
+      //everytime someone joins: Create a new player doc, and add it to Gamedoc. ID of the player doc = userID.
+      addUserToGameDoc(gameID, await _getUserId());
 
   }
   const [userIn, setInput] = useState("");
@@ -46,7 +46,7 @@ export default function joingame () {
     
             {/* Button to join the ga)me */}
             <Button mode='contained' icon="plus" onPress={joinGameClick}>
-                Join Game
+                WELL SHIT
             </Button>
     
             </View>
