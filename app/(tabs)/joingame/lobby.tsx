@@ -59,7 +59,7 @@ const lobby: FC = () => {
     })
     return unsub
   }
-
+  //...
   useEffect(() => {
     handleGameChange();
   }, [])
