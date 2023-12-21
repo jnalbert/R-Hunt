@@ -25,6 +25,7 @@ import {
   Accuracy,
 } from "expo-location";
 import { createGameDoc } from "../../../firebase/firebase.function";
+import * as ImagePicker from 'expo-image-picker';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -37,6 +38,9 @@ const styles = StyleSheet.create({
     width: "100%",
     maxHeight: 300,
     // padding: 10,
+    // borderColor: "purple",
+    // borderWidth: 1,
+    // borderRadius: 10,
   },
 });
 
@@ -66,11 +70,13 @@ export default function CreateScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
   const onAddObjective = async () => {
-    const { status } = await getCameraPermissionsAsync();
-    if (status !== "granted") {
+    const { status } = await requestCameraPermissionsAsync();
+    
+    if (status == "denied") {
       Alert.alert("Sorry, we need camera roll permissions to make this work!");
       return;
     }
+
     // get location persmissions
     let locationStats = await requestForegroundPermissionsAsync();
     if (locationStats.status !== "granted") {
@@ -121,7 +127,42 @@ export default function CreateScreen() {
     router.push( { pathname: "/creategame/lobby", params: { gameId: gameId  } });
   };
 
-  
+
+  const onAddObjectiveFromLibrary = async () => {
+
+    let locationStats = await requestForegroundPermissionsAsync();
+    if (locationStats.status !== "granted") {
+      Alert.alert("Permission to access location was denied");
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (result.canceled) return;
+
+    //copied from justin's code
+    setIsLoading(true);
+    const location = await getCurrentPositionAsync({ accuracy: Accuracy.High, timeInterval: 300 });
+    setGameInfo({
+      ...gameInfo,
+      objectives: [
+        ...gameInfo.objectives, //unpacking what's already in there
+        { //and now adding this new one
+          photoUrl: result.assets[0].uri,
+          number: gameInfo.objectives.length + 1,
+          longitude: location.coords.longitude,
+          latitude: location.coords.latitude,
+        },
+      ],
+    });
+    setIsLoading(false);
+
+  };
   
   return (
     <ScreenWrapperComp>
@@ -142,17 +183,8 @@ export default function CreateScreen() {
               ? ""
               : gameInfo.playerCount.toString()
           }
-          onChangeText={(text) => { //made it so the thing doesn't crash when you enter wrong types
-
-            // text=text.replace(/[^0-9]/g, '');
+          onChangeText={(text) => {
               setGameInfo({ ...gameInfo, playerCount: Number(text.replace(/[^0-9]/g, '')) });
-              // if (!isNaN(parseFloat(text)))  {
-              //   setGameInfo({ ...gameInfo, playerCount: Number(text) });
-              // } else if (text === "") {
-              //   setGameInfo({...gameInfo, playerCount: 0});
-              // } else {
-              //   setGameInfo({...gameInfo, playerCount:0});
-              // }
             }
           }
 
@@ -185,6 +217,15 @@ export default function CreateScreen() {
             Add Objective
           </Button>
         )}
+
+        <Button
+          icon="camera"
+          mode="outlined"
+          style={{ marginTop: 20, width: "60%", alignSelf: "center" }}
+          onPress={onAddObjectiveFromLibrary}
+        >
+          Add From Library
+        </Button>
       </View>
 {/* 
       <Button
