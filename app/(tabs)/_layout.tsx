@@ -26,7 +26,7 @@ export default function TabLayout() {
         name="creategame"
         options={{
           headerShown: false,
-          title: 'Shouldnt appear',
+          title: 'Create Game',
         }}
       />
       <Tabs.Screen

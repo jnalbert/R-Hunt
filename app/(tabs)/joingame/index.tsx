@@ -12,7 +12,7 @@ import { addUserToGameDoc, searchThroughDocs } from '../../../firebase/firebase.
 import { _getUserId } from '../../context/auth.store';
 
 
-export default function joingame () {
+export default function Joingame () {
   const router = useRouter()
   const joinGameClick =async () => {
     const gameID = await searchThroughDocs(userIn);
@@ -24,7 +24,7 @@ export default function joingame () {
       )
       return
     } 
-    router.push( { pathname: "/joingame/lobby", params: { gameId: gameID  } });
+    router.push( { pathname: "/joingame/lobby", params: { gameId: gameID} });
     //everytime someone joins: Create a new player doc, and add it to Gamedoc. ID of the player doc = userID.
     addUserToGameDoc(gameID, await _getUserId());
 
