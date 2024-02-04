@@ -25,12 +25,22 @@ export default function login() {
     }
     formState.username = formState.username + '@gmail.com';
     // await authSignOut();
-    const res = await authSignIn(formState.username, formState.password)
+    const res = await authSignIn(formState.username, formState.password);
+
+    // console.log("here???");
+    // console.log(res);
+    // console.log(res.error.message); //res.error is an object???
+
+
+    //crashes between here
     if (res.error) {
-      Alert.alert(res.error);
-      return;
+      // Alert.alert(res.error.message); // this shits causing it to crash!!!!!
+      Alert.alert("Login failed. Please check your username or password");
+      return ;
     } 
+
     router.push('/');
+    //and here
   }
 
 

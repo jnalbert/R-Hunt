@@ -121,9 +121,9 @@ export default function CreateScreen() {
     if (gameInfo.objectives.length === 0)
       return Alert.alert("Please add at least one objective");
 
-
+    console.log("hi, here2!!!!");
     const gameId = await createGameDoc(gameInfo);
-    // const gameId = '9WwTrQBUhI6dqx5lgQgk';
+    console.log("hi, here3!!!");
     router.push( { pathname: "/creategame/lobby", params: { gameId: gameId  } });
   };
 

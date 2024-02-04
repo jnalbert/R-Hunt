@@ -26,23 +26,22 @@ export const uploadImageToStorageBucket = async (path: string, url: string): Pro
   // add image to storage bucket and return the download URl
   try {
     url = Platform.OS === 'ios' ? url.replace('file://', '') : url;
-    console.log("2 Here1")
+
     const response = await fetch(url);
-    console.log("2 Here2")
+
     const blob = await response.blob();
-    console.log("2 Here3")
+
     const storageRef = ref(storage, path);
-    console.log("2 Here4")
-    
+
     const snapshot = await uploadBytes(storageRef, blob);
-    console.log("2 Here5")
+
 
     const downloadUrl = await getDownloadURL(snapshot.ref);
-    console.log("2 Here6")
+
 
     return downloadUrl
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     return error;
   }
 }
@@ -84,7 +83,7 @@ export const searchThroughDocs = async(gamecode : string): Promise<string>=> {
   const querySnapshot = await getDocs(q);
   let returnVal = "";
   querySnapshot.forEach((doc) => {
-    console.log(doc.id, " => ", doc.data());
+
     returnVal = doc.data().id;
   });
 return returnVal;
@@ -147,25 +146,29 @@ export const createGameDoc = async(game : GameInfo): Promise<string> => {
         ready: false,
         gameCode: code,
         winner: "",
+        finished: false,
     }
 
     await setDoc(newGameRef, dataToAdd);
 
+    const docSnap = await getDoc(newGameRef);
+    console.log(docSnap.data());
+
 
     for (let i = 0; i < game.objectives.length; i++) {
-        console.log("here1")
+
         const obj : ObjectiveType = game.objectives[i];
-        console.log("here2")
+
         const imageUrl = await uploadImageToStorageBucket(`games/${newGameRef.id}/${i}`, obj.photoUrl)
-        console.log("here3")
+
         const newObjectiveRef = doc(collection(db, `games/${newGameRef.id}/objectives`));
-        console.log("here4")
+
         await setDoc(newObjectiveRef, {
             image: imageUrl,
             latitude: obj.latitude,
             longitude: obj.longitude
         })
-        console.log("here5")
+
     }
     return newGameRef.id;
   } catch (error) {

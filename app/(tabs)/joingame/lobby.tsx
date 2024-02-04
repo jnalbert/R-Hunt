@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import ScreenWrapperComp from "../../../components/shared/ScreenWrapperComp";
 import { router, useLocalSearchParams } from "expo-router";
 import { Button, Text } from "react-native-paper";
@@ -41,26 +41,53 @@ const lobby: FC = () => {
     winner: "",
     gameCode: "",
     maxPlayers: 0,
+    finished: false,
   });
 
   const handleGameChange = async () => {
     const uuid = await _getUserId();
-    // console.log(tradeId, "trade")
+    console.log("\n\n\n\n\nnot running this!!!!!!!!");
+
+    let gameInfo1 = null;
     const unsub = onSnapshot(doc(db, "games", gameId.gameId as string || ""), (doc) => {
+      console.log("should only see this");
       if (doc.exists()) {
-        const gameInfo = doc.data() as GameDBType;
-        console.log("doc exits", gameInfo)
-        setGameInfo(gameInfo);
-        if (gameInfo.ready || gameInfo.currCount === gameInfo.maxPlayers) {
+        gameInfo1 = doc.data() as GameDBType;
+        console.log("gameinfo1111");
+        console.log(gameInfo1);
+
+        setGameInfo(gameInfo1);
+        
+        // console.log("gameinfo after update");
+        // console.log(gameInfo);
+        
+        if (gameInfo1.ready || gameInfo1.currCount === gameInfo1.maxPlayers) {
           router.push( { pathname: "/game", params: { gameId: gameId.gameId  } });
         }
+      } else {
+        console.log("critical error: document not found");
       }
       
     })
-    return unsub
+    console.log("gameinfo1!!");
+    console.log(gameInfo1);
+    console.log("did we respond to the game closing???" + gameInfo1.finished);
+
+
+    if (gameInfo1 != null && gameInfo1.finished) { //the game has ended!!!
+      console.log("The game has ended!");
+      Alert.alert("The Game Has been Closed!!!");
+      router.push({ pathname: "/joingame"});
+
+    }
+
+    console.log("finished with handlegamechange");
+
+    return unsub;
   }
 
   useEffect(() => {
+    console.log("\n\n\n\n\nalso shouldn't be seeing this");
     handleGameChange();
   }, [])
 

@@ -15,6 +15,7 @@ export interface GameDBType {
   ready: boolean
   winner: string
   gameCode: string
+  finished: boolean
 }
 
 export interface PlayerInGameDB {

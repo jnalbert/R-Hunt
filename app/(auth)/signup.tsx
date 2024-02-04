@@ -48,20 +48,14 @@ export default function login() {
     }
     
 
-    console.log("we finished0???");
 
     const res = await authSignUp(formState);
-    console.log("we finished0???");
     if (res.error) { 
-      console.log("we finished1222???");
-      console.log(res.error)
       Alert.alert(res.error);
       return;
     }
 
-    console.log("we finished1???");
     router.push("/");
-    console.log("we finished2???");
   };
 
   const handlePickProfilePicture = async () => {
@@ -73,7 +67,6 @@ export default function login() {
     });
 
     if (!result.canceled) {
-      // console.log(result.assets[0].fileSize)
       const manipulatedImage = await manipulateAsync(
         result.assets[0].uri,
         [{ resize: { height: 400 } }],

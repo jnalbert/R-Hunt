@@ -27,7 +27,7 @@ const ObjectivesList = () => {
     const unsub = onSnapshot(doc(db, `games/${gameId}/players`, uuid as string || ""), (doc) => {
       if (doc.exists()) {
         const playerGameInfo = doc.data() as PlayerInGameDB;
-        console.log("doc exits", playerGameInfo)
+        // console.log("doc exits", playerGameInfo)
         if (!objectives) return;
         playerGameInfo.objectsCompleted.forEach((obj) => {
           setObjectives((prevObjectives) =>

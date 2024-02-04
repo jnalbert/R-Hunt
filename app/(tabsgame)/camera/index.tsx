@@ -15,7 +15,6 @@ export default function CameraBitch() {
 
   const __startCamera = async () => {
     const {status} = await Camera.requestCameraPermissionsAsync()
-    console.log(status)
     if (status === 'granted') {
       setStartCamera(true)
     } else {
@@ -24,7 +23,6 @@ export default function CameraBitch() {
   }
   const __takePicture = async () => {
     const photo: any = await camera.takePictureAsync()
-    console.log(photo)
     setPreviewVisible(true)
     //setStartCamera(false)
     setCapturedImage(photo)
@@ -155,7 +153,6 @@ const styles = StyleSheet.create({
 })
 
 const CameraPreview = ({photo, retakePicture, savePhoto}: any) => {
-  console.log('sdsfds', photo)
   return (
     <View
       style={{

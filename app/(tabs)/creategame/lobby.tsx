@@ -7,7 +7,7 @@ import { GameDBType } from "../../../firebase/types/DBTypes";
 import {getGameInfoFromDB } from "../../../firebase/firebase.function";
 import { useAppTheme } from "../../_layout";
 import { _getUserId } from "../../context/auth.store";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from '../../../firebase/Firebase.Config';
 import { router } from "expo-router";
 
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 });
 
 const lobby: FC = () => {
-  const gameId = useLocalSearchParams();
+  const {gameId} = useLocalSearchParams();
 
   const [gameInfo, setGameInfo] = useState<GameDBType>({
     name: "",
@@ -34,18 +34,18 @@ const lobby: FC = () => {
     winner: "",
     gameCode: "",
     maxPlayers: 0,
+    finished: false,
   });
 
   const handleGameChange = async () => {
     // const uuid = await _getUserId(); //never used???
-    // console.log(tradeId, "trade")
-    const unsub = onSnapshot(doc(db, "games", gameId.gameId as string || ""), (doc) => {
+    const unsub = onSnapshot(doc(db, "games", gameId as string || ""), (doc) => {
+
       if (doc.exists()) {
         const gameInfo = doc.data() as GameDBType; //everytime lobby component renders, useEffect runs, meaning this runs and you fetch data from doc, and you check for that.
-        console.log("doc exits", gameInfo)
         setGameInfo(gameInfo);
         if (gameInfo.ready || gameInfo.currCount === gameInfo.maxPlayers) {
-          console.log("game is ready")
+          console.log("Game auto starts");
         }
       }
       
@@ -61,9 +61,25 @@ const lobby: FC = () => {
 
 
   const closeGame = async() => {
-    // ... //first, set games/gameID.gameState to "closed".
-    router.push( { pathname: "/creategame/create" }); // push yourself to the create page.
-    Alert.alert("The Game Has been Closed!!!"); // 
+    // router.push( { pathname: "/creategame/create" }); // push yourself to the create page.
+
+
+    // console.log(gameId);
+    // console.log(typeof(gameId));
+    
+    const docRef = doc(db, "games", gameId as string);
+
+    // console.log("what we have right now: ");
+    // const docSnap = await getDoc(docRef);
+    // console.log(docSnap.data());
+
+    await updateDoc(docRef, {
+      finished: true
+    });
+    
+
+    Alert.alert("The Game Has been Closed!!!");
+
 
   }
 

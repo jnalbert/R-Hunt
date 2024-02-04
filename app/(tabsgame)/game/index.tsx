@@ -108,19 +108,17 @@ export default function Game({fakeUserData})  {
     //   };
 
     useEffect(() => {
-        console.log('hi')
         let _getLocationAsync = async () => {
             let { status } = await Location.getForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                console.log('debieeed')
-            }
+            // if (status !== 'granted') {
+            //     console.log('debieeed')
+            // }
             currentLocation = await Location.watchPositionAsync({ accuracy: Location.Accuracy.Highest, timeInterval: 1000, distanceInterval: 0 }, (loc) => {
                 setCurrentLocation(loc.coords)
                 const distance = calculateDistance(loc.coords, DundeeA)
                 setDistance(distance)
                 getDistance(distance)
                 });
-            console.log(currentLocation)
            
         }
         _getLocationAsync()
