@@ -17,7 +17,7 @@ import {
   } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { GameInfo, ObjectiveType } from "../app/(tabs)/creategame/create";
-import { GameDBType, ObjectiveDBType } from "./types/DBTypes";
+import { GameDBType, ObjectiveDBType } from "./Types/DBTypes";
 
 
 
@@ -26,25 +26,32 @@ export const uploadImageToStorageBucket = async (path: string, url: string): Pro
   // add image to storage bucket and return the download URl
   try {
     
+    var response;
+    var blob;
+
+    console.log("entered upload image");
 
     url = Platform.OS === 'ios' ? url.replace('file://', '') : url;
 
-    const response = await fetch(url); 
+    response = await fetch(url); 
 
 
-    const blob = await response.blob();
+    blob = await response.blob();
 
-
+    console.log("p1");
     const storageRef = ref(storage, path); //storageRef: Reference to the place where you'd be storing it. users/${userID}/profilePhoto.  
 
+    console.log("p2");
 
-    const snapshot = await uploadBytes(storageRef, blob); //store it there with blob. wtf is a blob?
-
+    const snapshot = await uploadBytes(storageRef, blob); 
+    console.log("p3");
     const downloadUrl = await getDownloadURL(snapshot.ref);
+    
     return downloadUrl;
     
   } catch (error) {
-    // console.log(error)
+    console.log("upload image to storage failure");
+    console.log(error)
     return error;
   }
 }

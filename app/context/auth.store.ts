@@ -66,19 +66,16 @@ export const authSignUp = async (data: SignUpFormState) => {
 
     if (data.photoUrl == "") {
       data.photoUrl="https://github.com/jnalbert/R-Hunt/blob/main/assets/images/R%E2%80%99Hunt.png?raw=true";
-      console.log("are we successful?");
-      console.log(data);
     }
 
-    console.log("authsignup place 1");
+
 
     const path = `users/${resp.user.uid}/profilePhoto`;
 
-    console.log("authsignup place 2");
-    console.log(data);
-    console.log("end");
+
     const getProfileUrl = await uploadImageToStorageBucket(path, data.photoUrl);
-    
+    console.log("ok what the fuck?");
+
     const userDocRef = doc(db, 'users', resp.user.uid);
     await setDoc(userDocRef, {
       id: resp.user.uid,
