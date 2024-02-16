@@ -5,7 +5,7 @@ export default function Layout() {
  return <Stack
     screenOptions={{
         header: () => (
-            <UnifiedHeader inc="Bro wat"/>
+            <UnifiedHeader inc="Join Game"/>
         )
     }}
 ></Stack>;
