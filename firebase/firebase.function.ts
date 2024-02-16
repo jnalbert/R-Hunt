@@ -25,21 +25,24 @@ import { GameDBType, ObjectiveDBType } from "./types/DBTypes";
 export const uploadImageToStorageBucket = async (path: string, url: string): Promise<string> => {
   // add image to storage bucket and return the download URl
   try {
+    
+
     url = Platform.OS === 'ios' ? url.replace('file://', '') : url;
 
-    const response = await fetch(url);
+    const response = await fetch(url); 
+
 
     const blob = await response.blob();
 
-    const storageRef = ref(storage, path);
 
-    const snapshot = await uploadBytes(storageRef, blob);
+    const storageRef = ref(storage, path); //storageRef: Reference to the place where you'd be storing it. users/${userID}/profilePhoto.  
 
+
+    const snapshot = await uploadBytes(storageRef, blob); //store it there with blob. wtf is a blob?
 
     const downloadUrl = await getDownloadURL(snapshot.ref);
-
-
-    return downloadUrl
+    return downloadUrl;
+    
   } catch (error) {
     // console.log(error)
     return error;

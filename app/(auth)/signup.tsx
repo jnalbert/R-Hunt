@@ -8,6 +8,7 @@ import { MediaTypeOptions, launchImageLibraryAsync } from "expo-image-picker";
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
+import { db, storage } from "./Firebase.Config";
 
 export interface SignUpFormState {
   name: string;
@@ -40,18 +41,23 @@ export default function login() {
     }
     if (!formState.photoUrl) {
       Alert.alert("Please select a profile picture");
-      return;
+      console.log("we here rn");
+      
+      // return;
     }
     if (formState.password.length < 6) {
+      console.log("we heree");
       Alert.alert("Passwords needs to be 6 characters long");
       return;
     }
     
-
+    //usernames to try: z1->z_n
 
     const res = await authSignUp(formState);
     if (res.error) { 
-      Alert.alert(res.error);
+      console.log("displaying error, signup failed:");
+      console.log(res.error.message);
+      Alert.alert(res.error.message);
       return;
     }
 
@@ -75,6 +81,8 @@ export default function login() {
       setFormState({ ...formState, photoUrl: manipulatedImage.uri });
     }
   };
+
+
   return (
     <ScreenWrapperComp>
       <View style={{marginTop: '5%', alignItems: 'center', marginBottom: '5%'}}>

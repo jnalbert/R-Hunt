@@ -34,7 +34,7 @@ export default function login() {
 
     //crashes between here
     if (res.error) {
-      // Alert.alert(res.error.message); // this shits causing it to crash!!!!!
+      // Alert.alert(res.error.message); // this is causing it to crash!!!!!
       Alert.alert("Login failed. Please check your username or password");
       return ;
     } 

@@ -13,43 +13,53 @@ import { _getUserId } from '../../context/auth.store';
 
 
 export default function joingame () {
-  const router = useRouter()
-  const joinGameClick =async () => {
-    const gameID = await searchThroughDocs(userIn);
+  const router = useRouter();
+  // const joinGameClick =async () => {
+  //   const gameID = await searchThroughDocs(userIn);
 
-    // router.push("/game")
-    if (!gameID) {
-      alert(
-        "Game not found"
-      )
-      return
-    } 
-      router.push( { pathname: "/joingame/lobby", params: { gameId: gameID  } });
-      //everytime someone joins: Create a new player doc, and add it to Gamedoc. ID of the player doc = userID.
-      addUserToGameDoc(gameID, await _getUserId());
+  //   // router.push("/game")
+  //   if (!gameID) {
+  //     alert(
+  //       "Game not found"
+  //     )
+  //     return
+  //   } 
+  //     router.push( { pathname: "/joingame/lobby", params: { gameId: gameID  } });
+  //     //everytime someone joins: Create a new player doc, and add it to Gamedoc. ID of the player doc = userID.
+  //     addUserToGameDoc(gameID, await _getUserId());
 
+  // }
+  // const [userIn, setInput] = useState("");
+
+
+  const logout = async () => {
+    console.log("we here??");
+    router.push('/(auth)/login');
   }
-  const [userIn, setInput] = useState("");
 
     return (
         <ScreenWrapperComp>
+
+
             <View style={styles.container}>
-            <Text style={styles.title}>Enter Game Code</Text>
-    
-            {/* Input for entering the game code */}
-            <TextInput 
-                style={styles.input}
-                placeholder='Enter Game Code'
-                value={userIn}
-                onChangeText={(text) => setInput(text)}
-            />
-    
-            {/* Button to join the ga)me */}
-            <Button mode='contained' icon="plus" onPress={joinGameClick}>
-                WELL SHIT
-            </Button>
+              {/* <Text style={styles.title}>Enter Game Code</Text> */}
+      
+              {/* Input for entering the game code */}
+              {/* <TextInput 
+                  style={styles.input}
+                  placeholder='Enter Game Code'
+                  value={userIn}
+                  onChangeText={(text) => setInput(text)}
+              /> */}
+      
+              {/* Button to join the ga)me */}
+              <Button mode='contained' icon="plus" onPress={logout}>
+                  Log out
+              </Button>
     
             </View>
+
+
         </ScreenWrapperComp>
       );
     };
