@@ -68,6 +68,8 @@ export const authSignUp = async (data: SignUpFormState) => {
       data.photoUrl="https://github.com/jnalbert/R-Hunt/blob/main/assets/images/R%E2%80%99Hunt.png?raw=true";
     }
 
+    console.log("\n\n\n\nuser");
+    console.log(resp.user);
 
 
     const path = `users/${resp.user.uid}/profilePhoto`;
@@ -99,5 +101,6 @@ export const _getUserId = async () => {
   const uid = await auth.currentUser.uid;
   return uid;
 };
+
 
 registerInDevtools({ AuthStore });

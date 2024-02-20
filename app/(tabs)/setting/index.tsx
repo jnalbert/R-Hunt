@@ -9,7 +9,9 @@ import ScreenWrapperComp from '../../../components/shared/ScreenWrapperComp';
 import { Button, TextInput } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { addUserToGameDoc, searchThroughDocs } from '../../../firebase/firebase.function';
-import { _getUserId } from '../../context/auth.store';
+import { _getUserId, authSignOut } from '../../context/auth.store';
+import { auth, db } from '../../../firebase/Firebase.Config';
+
 
 
 export default function joingame () {
@@ -33,25 +35,25 @@ export default function joingame () {
 
 
   const logout = async () => {
-    console.log("we here??");
+    // console.log("pre signout: ");
+    // console.log(auth.currentUser);
+    await authSignOut();
+    // console.log("post signout: ");
+    // console.log(auth.currentUser);
+
     router.push('/(auth)/login');
   }
 
+  
+  
+
     return (
         <ScreenWrapperComp>
-
-
             <View style={styles.container}>
-              {/* <Text style={styles.title}>Enter Game Code</Text> */}
-      
-              {/* Input for entering the game code */}
-              {/* <TextInput 
-                  style={styles.input}
-                  placeholder='Enter Game Code'
-                  value={userIn}
-                  onChangeText={(text) => setInput(text)}
-              /> */}
-      
+
+              {/* Add user profile picture */}
+
+
               {/* Button to join the ga)me */}
               <Button mode='contained' icon="plus" onPress={logout}>
                   Log out
