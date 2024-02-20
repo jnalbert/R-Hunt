@@ -3,14 +3,16 @@ import {
     View,
     Text,
     StyleSheet,
+    TouchableOpacity,
 
 } from 'react-native'
 import ScreenWrapperComp from '../../../components/shared/ScreenWrapperComp';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, TextInput, Divider, List, Menu } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { addUserToGameDoc, searchThroughDocs } from '../../../firebase/firebase.function';
 import { _getUserId, authSignOut } from '../../context/auth.store';
 import { auth, db } from '../../../firebase/Firebase.Config';
+import { Ionicons,AntDesign, MaterialIcons, MaterialCommunityIcons    } from '@expo/vector-icons';
 
 
 
@@ -44,20 +46,63 @@ export default function joingame () {
     router.push('/(auth)/login');
   }
 
+
+  const f = () => {
+    console.log("you pressed");
+  }
   
-  
+  const Expander = ({iconName, name}) => {
 
     return (
+      <TouchableOpacity onPress={f} style={{padding:4, display: 'flex', flexDirection: 'row',justifyContent: 'space-between', gap: 1, paddingTop: 5}}>
+        
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+        <MaterialCommunityIcons style={{marginTop: -2}} name={iconName} size={24} color="black" />
+          <Text> {name} </Text>
+        </View>
+
+        <TouchableOpacity style={{marginRight: 10}}>
+          <AntDesign name="right" size={22} color="black" />
+        </TouchableOpacity>
+        
+      </TouchableOpacity>
+    );
+  };
+  
+  const [expanded, setExpanded] = React.useState(true);
+
+  const handlePress = () => setExpanded(!expanded);
+    return (
         <ScreenWrapperComp>
-            <View style={styles.container}>
+            <View style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems:'center',  justifyContent: 'space-between', height:'100%'}}>
 
               {/* Add user profile picture */}
 
+              <View style={{display:'flex', flexDirection: 'column',width: '80%', paddingTop:20}}>
+                
+                <Expander iconName = "account-outline" name= "Account"/>
+                <Divider style={{margin:10, borderWidth:0.2, borderColor:'gray'}}/>
+                <Expander iconName = "bell-outline" name= "Notification"/>
+                <Divider style={{margin:10,borderWidth:0.2, borderColor:'gray'}}/>
+                <Expander iconName = "eye" name= "Appearance"/>
+                <Divider style={{margin:10,borderWidth:0.2, borderColor:'gray'}}/>
+                <Expander iconName = "lock-check-outline" name= "Privacy&Security"/>
+                <Divider style={{margin:10,borderWidth:0.2, borderColor:'gray'}}/>
+                <Expander iconName = "headphones" name= "Help & Support"/>
+                <Divider style={{margin:10,borderWidth:0.2, borderColor:'gray'}}/>
+                <Expander iconName = "account-question-outline" name= "About"/>
+                <Divider style={{margin:10,borderWidth:0.2, borderColor:'gray'}}/>
+              </View>
+
 
               {/* Button to join the ga)me */}
-              <Button mode='contained' icon="plus" onPress={logout}>
-                  Log out
-              </Button>
+              <View>
+                <Button mode='contained' icon="plus" onPress={logout}>
+                    Log out
+                </Button>
+              </View>
+              
+
     
             </View>
 
